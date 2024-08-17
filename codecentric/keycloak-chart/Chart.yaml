@@ -1,0 +1,10 @@
+apiVersion: v2
+version: 0.0.0
+description: my-keycloak-chart for code centric keycloak
+name: my-keycloak-chart
+
+dependencies:
+  - name: keycloakx
+    version: 1.6.0
+    repository: https://codecentric.github.io/helm-charts
+    condition: keycloakx.enabled

@@ -1,0 +1,40 @@
+keycloakx:
+  enabled: true
+  fullnameOverride: "keycloak"
+  image:
+    # repository: 
+    # tag: 
+  serviceAccount:
+    create: false
+
+  command:
+    - '/opt/keycloak/bin/kc.sh'
+    - 'start-dev'
+    - '--http-enabled=true'
+    - '--http-port=8080'
+    - '--hostname-strict=false'
+    - '--hostname-strict-https=false'
+    - '--proxy=edge'
+    - '--spi-events-listener-jboss-logging-success-level=info'
+    - '--spi-events-listener-jboss-logging-error-level=warn'
+
+  extraEnv: |
+    - name: KEYCLOAK_ADMIN
+      value: 'admin'
+    - name: KEYCLOAK_ADMIN_PASSWORD
+      value: 'admin'
+    - name: KC_HTTPS_KEY_STORE_PASSWORD
+      value: 'changeit'
+    - name: EVENTS_EXPIRATION
+      value: '3600'
+    - name: JAVA_OPTS_APPEND
+      value: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=50.0
+        -Djava.awt.headless=true
+        -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
+
+  dbchecker:
+    enabled: false
+  eventsExpiration: "3600"
+
